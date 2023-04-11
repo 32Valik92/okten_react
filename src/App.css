@@ -1,0 +1,9 @@
+h3 {
+    text-align: center;
+}
+
+.simpson, .character {
+    border: red solid 3px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+}
