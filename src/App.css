@@ -1,0 +1,20 @@
+h1 {
+    text-align: center;
+}
+
+.Posts, .ObjectsSpaceX {
+    border: green solid 4px;
+    padding: 5px;
+}
+
+.Post, .ObjectSpaceX {
+    border: gold solid 4px;
+    padding: 5px;
+    margin-bottom: 3px;
+
+}
+
+.ShowPost {
+    border: red solid 4px;
+    padding: 5px;
+}
