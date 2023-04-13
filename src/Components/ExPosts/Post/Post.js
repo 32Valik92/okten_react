@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../App.css'
+import './PostStyle.css'
 
 const Post = ({post, showInfoPost}) => {
     return (

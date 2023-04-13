@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../App.css'
+import './ObjectStyle.css'
 
 
 const ObjectSpaceX = ({objectSpaceX}) => {
@@ -9,8 +9,8 @@ const ObjectSpaceX = ({objectSpaceX}) => {
             <p>
                 mission_name - {mission_name}<br/>
                 launch_year - {launch_year}<br/>
-                mission_patch - {mission_patch}<br/>
             </p>
+            <img src={mission_patch}/>
         </div>
     );
 };

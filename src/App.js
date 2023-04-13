@@ -3,6 +3,9 @@ import {useState} from "react";
 import ShowPost from "./Components/ExPosts/ShowPost/ShowPost";
 import ObjectsSpaceX from "./Components/ExSpaceX/ObjectsSpaceX/ObjectsSpaceX";
 import './App.css'
+import './Components/ExSpaceX/ObjectsSpaceX/ObjectsStyle.css'
+import './Components/ExPosts/Posts/PostsStyle.css'
+import './Components/ExPosts/ShowPost/ShowPostStyle.css'
 
 const App = () => {
 
