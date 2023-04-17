@@ -1,5 +1,5 @@
-import {placeholder} from "../configs/urls.placeholder";
-import {axiosUser} from "./placeholder.service";
+import {placeholder} from "../configs/urls";
+import {axiosUser} from "./axios.service";
 
 const userService = {
     createUser: (user) => axiosUser.post(placeholder.users, user),
