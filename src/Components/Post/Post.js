@@ -13,7 +13,7 @@ const Post = () => {
 
     useEffect(() => {
         postService.getAll().then(postData => setPost(postData.data))
-    }, [])
+    }, [id])
 
     // console.log(post);
 
