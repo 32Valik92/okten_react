@@ -1,0 +1,15 @@
+.menu {
+    display: flex;
+    justify-content: space-evenly;
+
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+.menu > div {
+    width: 30%;
+    background-color: coral;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
