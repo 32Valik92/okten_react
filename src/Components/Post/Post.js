@@ -12,7 +12,7 @@ const Post = () => {
     // console.log(post[id-1]);
 
     useEffect(() => {
-        postService.getAll().then(postData => setPost(postData.data))
+        postService.getById(id).then(postData => setPost(postData.data))
     }, [id])
 
     // console.log(post);
@@ -20,13 +20,14 @@ const Post = () => {
     return (
         <div className={'post'}>
             {
-                post.length > 0 && (
+                post && (
                     <div>
                         <h3>Your Post</h3>
-                        <p>User ID - {post[id - 1].userId}</p>
-                        <p>Id - {post[id - 1].id}</p>
-                        <p>Title - {post[id - 1].title}</p>
-                        <p>Body - {post[id - 1].body}</p>
+                        <p>User ID - {post.userId}</p>
+                        <p>Id - {post.id}</p>
+                        <p>Title - {post.title}</p>
+                        <p>Body - {post.body}</p>
+
                     </div>
                 )
             }

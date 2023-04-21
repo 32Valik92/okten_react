@@ -1,10 +1,13 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const Comment = ({comment}) => {
+    const navigate = useNavigate();
+
     return (
         <div>
-            {comment.id}. {comment.name} <Link to={`${comment.postId}`}>[Show Post of Comment]</Link>
+            {comment.id}. {comment.name} <br/>
+            <button onClick={() => navigate(`${comment.postId}`)}>Show Post of Comment</button>
         </div>
     );
 };

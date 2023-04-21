@@ -2,7 +2,7 @@ import {axiosService} from "./axiosService";
 import {endingURL} from "../urls/urls";
 
 const albumsService = {
-    getAll: () => axiosService(endingURL.albums)
+    getAll: () => axiosService.get(endingURL.albums)
 }
 
 export {albumsService}
