@@ -1,0 +1,14 @@
+.Header {
+    display: flex;
+    justify-content: space-around;
+}
+
+.Header a {
+    text-decoration: none;
+    color: green;
+    font-size: 25px;
+}
+
+.Header a[class='active'] {
+    color: red;
+}
