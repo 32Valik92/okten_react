@@ -1,29 +1,34 @@
 import {useDispatch, useSelector} from "react-redux";
-import {decrement, increment, reset} from "./redux/actions/base.action-creator";
+import {useEffect} from "react";
+
+const fetchCars = () => async (dispatch) => {
+    dispatch({type: 'START_LOADING'});
+
+    let response = await fetch('http://owu.linkpc.net/carsAPI/v1/cars')
+        .then(value => value.json());
+    console.log(response);
+
+    dispatch({type: 'SET_CARS', payload: response});
+
+}
 
 const App = () => {
-    let store = useSelector(state => state)
+    let store = useSelector(state => state);
     const dispatch = useDispatch();
 
-    const onIncrement = () => {
-        dispatch(increment())
-    }
+    useEffect(() => {
 
-    const onDecrement = () => {
-        dispatch(decrement())
-    }
+        dispatch(fetchCars());
 
-    const onRes = () => {
-        dispatch(reset())
-    }
+    }, [dispatch]);
 
     return (
         <div>
+            {store.isLoading && <h2>loading...</h2>}
 
-            <h1>{store}</h1>
-            <button onClick={onIncrement}>increment</button>
-            <button onClick={onDecrement}>decrement</button>
-            <button onClick={onRes}>reset</button>
+            {
+                store.cars.map(value => <div key={value.id}>{value.brand}</div>)
+            }
         </div>
     );
 };
