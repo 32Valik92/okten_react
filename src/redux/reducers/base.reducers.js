@@ -1,16 +1,20 @@
-const baseReducer = (state = 0, action) => {
+const initState = {
+    isLoading: false,
+    users: []
+};
+
+const baseReducer = (state = initState, action) => {
 
     switch (action.type) {
-        case 'INC':
-            return state += action.payload;
-        case 'DEC':
-            return state -= action.payload;
-        case 'RESET':
-            return 0;
+        case 'START_WORK':
+            return {...state, isLoading: true};
+        case 'GET_USERS':
+            return {...state, isLoading: false, users: [...action.payload]};
         default:
             return state;
     }
 }
+
 export {
     baseReducer
 }

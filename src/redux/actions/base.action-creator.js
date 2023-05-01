@@ -1,19 +1,12 @@
-import {DEC, INC, RESET} from "./base.action";
+import {GET_USERS, START_WORK} from "./base.action";
+import {userService} from "../../services/user.service";
 
-const increment = () => {
-    return {type: INC, payload: 2}
+const showUsers = () => async (dispatch) => {
+    dispatch({type: START_WORK});
+
+    let response = await userService.getAll().then(value => value.data);
+
+    dispatch({type: GET_USERS, payload: response});
 }
 
-const decrement = () => {
-    return {type: DEC, payload: 2}
-}
-
-const reset = () => {
-    return {type: RESET, payload: 2}
-}
-
-export {
-    increment,
-    decrement,
-    reset
-}
+export {showUsers}

@@ -1,29 +1,21 @@
 import {useDispatch, useSelector} from "react-redux";
-import {decrement, increment, reset} from "./redux/actions/base.action-creator";
+import {useEffect} from "react";
+
+import Users from "./components/users";
+import {showUsers} from "./redux/actions/base.action-creator";
 
 const App = () => {
     let store = useSelector(state => state)
     const dispatch = useDispatch();
 
-    const onIncrement = () => {
-        dispatch(increment())
-    }
-
-    const onDecrement = () => {
-        dispatch(decrement())
-    }
-
-    const onRes = () => {
-        dispatch(reset())
-    }
+    useEffect(() => {
+        dispatch(showUsers())
+    }, [dispatch])
 
     return (
         <div>
-
-            <h1>{store}</h1>
-            <button onClick={onIncrement}>increment</button>
-            <button onClick={onDecrement}>decrement</button>
-            <button onClick={onRes}>reset</button>
+            {store.isLoading && <h2>Loading...</h2>}
+            <Users users={store.users}/>
         </div>
     );
 };

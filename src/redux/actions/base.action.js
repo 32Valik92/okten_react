@@ -1,9 +1,7 @@
-const INC = 'INC';
-const DEC = 'DEC';
-const RESET = 'RESET';
+const START_WORK = 'START_WORK';
+const GET_USERS = 'GET_USERS';
 
 export {
-    INC,
-    DEC,
-    RESET
+    START_WORK,
+    GET_USERS
 }
