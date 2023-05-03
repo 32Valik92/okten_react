@@ -16,7 +16,7 @@ const CarForm = ({setAllCars, carForUpdate, setCarForUpdate}) => {
             setValue('price', carForUpdate.price, {shouldValidate: true})
             setValue('year', carForUpdate.year, {shouldValidate: true})
         }
-    }, [carForUpdate])
+    },[carForUpdate])
 
     const save = async (car) => {
         const {data} = await carService.create(car);
@@ -29,16 +29,10 @@ const CarForm = ({setAllCars, carForUpdate, setCarForUpdate}) => {
         const {data} = await carService.updateById(carForUpdate.id, car);
         setAllCars(prev => !prev);
         setCarForUpdate(null);
-        console.log(data);
+        // console.log(data);
         reset();
     };
 
-    const deleteCar = async (id) => {
-        const {data} = await carService.deleteById(id);
-        setAllCars(prev => !prev);
-        console.log(data);
-        reset();
-    };
 
 
     return (
@@ -81,12 +75,7 @@ const CarForm = ({setAllCars, carForUpdate, setCarForUpdate}) => {
             {errors.year && <span>{errors.year.message}</span>}
 
             <button disabled={!isValid}>{carForUpdate ? 'Update' : 'Create'}</button>
-            {carForUpdate && (
-                <button onClick={() => {
-                    deleteCar(carForUpdate.id);
-                    setCarForUpdate(null)
-                }}>Delete</button>
-            )}
+
 
 
         </form>

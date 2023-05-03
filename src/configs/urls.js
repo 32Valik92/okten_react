@@ -1,5 +1,5 @@
 const baseURL = 'http://owu.linkpc.net/carsAPI/v1';
-const baseURLPlaceholder = 'http://jsonplaceholder.typicode.com';
+const baseURLPlaceholder = 'https://jsonplaceholder.typicode.com';
 
 
 const urls = {
