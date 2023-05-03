@@ -1,6 +1,7 @@
 import React from 'react';
 import {useForm} from "react-hook-form";
-import {userService} from "../../../services/user.service";
+
+import {userService} from "../../../services";
 
 const UserForm = () => {
     const {register, handleSubmit, reset} = useForm();
@@ -33,4 +34,4 @@ const UserForm = () => {
     );
 };
 
-export default UserForm;
+export {UserForm};

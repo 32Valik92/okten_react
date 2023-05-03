@@ -1,5 +1,6 @@
 import {axiosService} from "./axios.service";
-import {urls} from "../configs/urls";
+import {urls} from "../constants";
+
 
 const carService = {
     getAll: () => axiosService.get(urls.cars),

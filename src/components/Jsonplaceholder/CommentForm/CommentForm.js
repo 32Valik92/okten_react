@@ -1,12 +1,13 @@
 import React from 'react';
 import {useForm} from "react-hook-form";
-import {userService} from "../../../services/user.service";
+
+import {commentService} from "../../../services";
 
 const CommentForm = () => {
     const {register, handleSubmit, reset} = useForm();
 
     const addComment = async (comment) => {
-        const {data} = await userService.createComment(comment);
+        const {data} = await commentService.createComment(comment);
         console.log('addComment:\n', data);
         reset();
     }

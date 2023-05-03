@@ -1,9 +1,9 @@
-import {placeholder} from "../configs/urls";
 import {axiosUser} from "./axios.service";
+import {placeholder} from "../constants";
 
 const userService = {
-    createUser: (user) => axiosUser.post(placeholder.users, user),
-    createComment: (comment) => axiosUser.post(placeholder.comments, comment)
+    getAll: () => axiosUser.get(placeholder.users),
+    createUser: (user) => axiosUser.post(placeholder.users, user)
 }
 
 export {

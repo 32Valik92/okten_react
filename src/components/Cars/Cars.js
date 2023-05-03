@@ -1,17 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {carService} from "../../services/car.service";
-import Car from "../Car/Car";
-import CarForm from "../CarForm/CarForm";
+import {useDispatch, useSelector} from "react-redux";
+
+import {carActions} from "../../redux";
+import {carService} from "../../services";
+import {CarForm} from "../CarForm/CarForm";
+import {Car} from "../Car/Car";
 
 const Cars = () => {
-    const [cars, setCars] = useState([]);
-    const [allCars, setAllCars] = useState(null);
-    const [carForUpdate, setCarForUpdate] = useState(null);
-    const [onChange, setOnChange] = useState(false)
+    const [allCars, setAllCars] = useState(null); // Тригер, спрацьовує, коли додають машину та змінюють
+    const [carForUpdate, setCarForUpdate] = useState(null); // Тригер, спрацьовує для відхопленя машини, яку змінюємо та для занесення даних до форми
+    const [onChange, setOnChange] = useState(false); // Тригер, спрацьовує на видалені машини
+
+    const dispatch = useDispatch(); // Будемо класти машини в сховище
+    const {cars} = useSelector(state => state.carStore) // Дістаємо і користуємося
 
     useEffect(() => {
-        carService.getAll().then(value => value.data).then(value => setCars(value))
-    }, [allCars, onChange]);
+        carService.getAll().then(value => value.data).then(value => dispatch(carActions.setCars(value)));
+    }, [allCars, onChange, dispatch]);
+
 
     return (
         <div>
@@ -22,4 +28,4 @@ const Cars = () => {
     );
 };
 
-export default Cars;
+export {Cars};

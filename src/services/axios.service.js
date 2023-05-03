@@ -1,9 +1,13 @@
 import axios from "axios";
-import {baseURL, baseURLPlaceholder} from "../configs/urls";
 
-const axiosService = axios.create({baseURL});
+import {baseURLCar, baseURLPlaceholder} from "../constants";
+
+const axiosService = axios.create({baseURL: baseURLCar});
 const axiosUser = axios.create({baseURL: baseURLPlaceholder});
+const axiosComment = axios.create({baseURL: baseURLPlaceholder});
+
 export {
     axiosService,
-    axiosUser
+    axiosUser,
+    axiosComment
 }

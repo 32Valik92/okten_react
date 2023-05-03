@@ -1,14 +1,16 @@
 import React from 'react';
-import {carService} from "../../services/car.service";
+
+import {carService} from "../../services";
 
 const Car = ({car, setCarForUpdate, setOnChange}) => {
     const {id, brand, price, year} = car;
+
     const deleteCar = async (id) => {
         const {data} = await carService.deleteById(id);
-        // setAllCars(prev => !prev);
         setOnChange(prev => !prev)
         console.log(data);
     };
+
     return (
         <div>
             <div>id: {id}</div>
@@ -21,4 +23,4 @@ const Car = ({car, setCarForUpdate, setOnChange}) => {
     );
 };
 
-export default Car;
+export {Car};
