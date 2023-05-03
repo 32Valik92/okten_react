@@ -3,9 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 import {commentService} from "../../../services";
 import {commentActions} from "../../../redux";
-import CommentForm from "../CommentForm/CommentForm";
 import {Comment} from "../Comment/Comment";
-
 
 const Comments = () => {
     const dispatch = useDispatch(); // Будемо класти коментарі у сховище
@@ -17,8 +15,6 @@ const Comments = () => {
 
     return (
         <div>
-            <CommentForm/>
-            <hr/>
             {comments.map(comment => <Comment key={comment.id} comment={comment}/>)}
         </div>
     );

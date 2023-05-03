@@ -2,12 +2,16 @@ import React from 'react';
 import {useForm} from "react-hook-form";
 
 import {userService} from "../../../services";
+import {useDispatch} from "react-redux";
+import {userActions} from "../../../redux";
 
 const UserForm = () => {
     const {register, handleSubmit, reset} = useForm();
+    const dispatch = useDispatch(); // Будемо класти користувачів до сховища
 
     const addUser = async (user) => {
         const {data} = await userService.createUser(user);
+        dispatch(userActions.addUser(data))
         console.log('addUser:\n', data);
         reset();
     }

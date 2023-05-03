@@ -1,10 +1,12 @@
 import React from 'react';
 
-import {Comments} from "../components";
+import {CommentForm, Comments} from "../components";
 
 const CommentPage = () => {
     return (
         <div>
+            <CommentForm/>
+            <hr/>
             <Comments/>
         </div>
     );

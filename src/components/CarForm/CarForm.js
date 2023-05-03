@@ -1,16 +1,20 @@
 import React, {useEffect} from 'react';
 import {useForm} from "react-hook-form";
 import {joiResolver} from "@hookform/resolvers/joi";
+import {useDispatch, useSelector} from "react-redux";
 
 import {carValidator} from "../../validators";
 import {carService} from "../../services";
+import {carActions} from "../../redux";
 
-const CarForm = ({setAllCars, carForUpdate, setCarForUpdate}) => {
+const CarForm = () => {
 
     const {register, handleSubmit, reset, formState: {errors, isValid}, setValue} = useForm({
         mode: 'all',
         resolver: joiResolver(carValidator)
     });
+    const dispatch = useDispatch(); // Будемо класти в сховище наш новий car
+    const {carForUpdate} = useSelector(state => state.carStore);
 
     useEffect(() => {
         if (carForUpdate) {
@@ -22,16 +26,16 @@ const CarForm = ({setAllCars, carForUpdate, setCarForUpdate}) => {
 
     const save = async (car) => {
         const {data} = await carService.create(car);
-        setAllCars(prev => !prev)
         // console.log(data);
+        dispatch(carActions.setOnChange());
         reset();
     }
 
     const update = async (car) => {
         const {data} = await carService.updateById(carForUpdate.id, car);
-        setAllCars(prev => !prev);
-        setCarForUpdate(null);
         // console.log(data);
+        dispatch(carActions.setOnChange()); // тригер для зміни стану
+        dispatch(carActions.setCarForUpdate(null)); // Робимо 'create' дізейбленим
         reset();
     };
 
