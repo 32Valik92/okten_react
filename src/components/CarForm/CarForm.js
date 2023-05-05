@@ -4,7 +4,6 @@ import {joiResolver} from "@hookform/resolvers/joi";
 import {useDispatch, useSelector} from "react-redux";
 
 import {carValidator} from "../../validators";
-import {carService} from "../../services";
 import {carActions} from "../../redux";
 
 const CarForm = () => {
@@ -25,17 +24,12 @@ const CarForm = () => {
     }, [carForUpdate, setValue])
 
     const save = async (car) => {
-        const {data} = await carService.create(car);
-        // console.log(data);
-        dispatch(carActions.setOnChange());
+        await dispatch(carActions.create({car: car}));
         reset();
     }
 
     const update = async (car) => {
-        const {data} = await carService.updateById(carForUpdate.id, car);
-        // console.log(data);
-        dispatch(carActions.setOnChange()); // тригер для зміни стану
-        dispatch(carActions.setCarForUpdate(null)); // Робимо 'create' дізейбленим
+        await dispatch(carActions.update({id: carForUpdate.id, car: car}));
         reset();
     };
 

@@ -2,9 +2,4 @@ export * from './Header/Header';
 export * from './Car/Car';
 export * from './CarForm/CarForm';
 export * from './Cars/Cars';
-export * from './Jsonplaceholder/Comment/Comment';
-export * from './Jsonplaceholder/Comments/Comments';
-export * from './Jsonplaceholder/CommentForm/CommentForm';
-export * from './Jsonplaceholder/User/User';
-export * from './Jsonplaceholder/Users/Users';
-export * from './Jsonplaceholder/UserForm/UserForm';
+
