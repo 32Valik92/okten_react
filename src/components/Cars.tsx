@@ -9,7 +9,7 @@ const Cars: FC = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(carActions.getAll())
+        dispatch(carActions.getAll());
     }, [dispatch, trigger])
 
     return (

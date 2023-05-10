@@ -1,25 +1,29 @@
 import {createAsyncThunk, createSlice, isFulfilled, isRejectedWithValue} from '@reduxjs/toolkit';
 import {AxiosError} from "axios";
 
-import {ICar, IError} from '../../interfaces';
+import {ICar, IError, IPagination} from '../../interfaces';
 import {carService} from "../../services";
 
 interface IState {
-    cars: ICar[],
-    errors: IError | null,
-    trigger: boolean,
-    carForUpdate: ICar | null
+    cars: ICar[];
+    prev: string;
+    next: string;
+    errors: IError | null;
+    trigger: boolean;
+    carForUpdate: ICar | null;
 }
 
 const initialState: IState = {
     cars: [],
+    prev: null,
+    next: null,
     errors: null,
     carForUpdate: null,
     trigger: false
 };
 
-
-const getAll = createAsyncThunk<ICar[], void>(
+// AsyncThunk для отримання всіх машинок
+const getAll = createAsyncThunk<IPagination<ICar[]>, void>(
     'carSlice/getAll',
     async (_, {rejectWithValue}) => {
         try {
@@ -32,6 +36,7 @@ const getAll = createAsyncThunk<ICar[], void>(
     }
 )
 
+// AsyncThunk для створення машинки
 const create = createAsyncThunk<void, { car: ICar }>(
     'carSlice/create',
     async ({car}, {rejectWithValue}) => {
@@ -44,9 +49,9 @@ const create = createAsyncThunk<void, { car: ICar }>(
     }
 );
 
+// AsyncThunk для оновлення машинки
 const update = createAsyncThunk<void, { id: number, car: ICar }>(
     'carSlice/update',
-
     async ({id, car}, {rejectWithValue}) => {
         try {
             await carService.updateById(id, car);
@@ -57,6 +62,7 @@ const update = createAsyncThunk<void, { id: number, car: ICar }>(
     }
 );
 
+// AsyncThunk для видалення машинки
 const deleteCar = createAsyncThunk<void, { id: number }>(
     'carSlice/deleteCar',
     async ({id}, {rejectWithValue}) => {
@@ -67,19 +73,25 @@ const deleteCar = createAsyncThunk<void, { id: number }>(
             return rejectWithValue(err.response.data);
         }
     }
-)
+);
+
 const slice = createSlice({
     name: 'carSlice',
     initialState,
     reducers: {
+        // Відхоплення машинки яку оновлюємо
         setCarForUpdate: (state, action) => {
             state.carForUpdate = action.payload;
         }
     },
     extraReducers: builder =>
         builder
+            // Запис всіх машинок при успішному отриманні
             .addCase(getAll.fulfilled, (state, action) => {
-                state.cars = action.payload;
+                const {next, prev, items} = action.payload;
+                state.cars = items;
+                state.prev = prev;
+                state.next = next;
             })
             .addCase(update.fulfilled, state => {
                 state.carForUpdate = null;

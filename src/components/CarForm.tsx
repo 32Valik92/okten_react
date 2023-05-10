@@ -12,9 +12,9 @@ const CarForm = () => {
 
     useEffect(() => {
         if (carForUpdate) {
-            setValue('brand', carForUpdate.brand)
-            setValue('price', carForUpdate.price)
-            setValue('year', carForUpdate.year)
+            setValue('brand', carForUpdate.brand);
+            setValue('price', carForUpdate.price);
+            setValue('year', carForUpdate.year);
         }
     }, [carForUpdate, setValue])
 

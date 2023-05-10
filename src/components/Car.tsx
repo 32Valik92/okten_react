@@ -5,7 +5,7 @@ import {useAppDispatch} from "../hooks";
 import {carActions} from "../redux";
 
 interface IProps {
-    car: ICar
+    car: ICar;
 }
 
 const Car: FC<IProps> = ({car}) => {
