@@ -1,9 +1,20 @@
 import axios from 'axios';
+import {createBrowserHistory} from 'history';
 
-import {baseURL} from '../constants';
+import {baseURL, urls} from '../constants';
 import {authService} from "./auth.service";
+import {IWaitListCB} from "../types";
 
 const axiosService = axios.create({baseURL});
+
+let isRefreshing = false; // Трігер для перевірки чи ми в стані реврешу чи ні
+
+//Масив для зберігання колбеків, які будуть іти в цю "колекцію", щоб потім коли виконався перший, ми з новими ключами перевиконали всі запити
+const waitList: IWaitListCB[] = [];
+
+// Історія навігації по браузеру, бо ми не можемо викликати тут хук useNavigate, бо це не компонента
+const history = createBrowserHistory({window});
+
 
 // axiosService.interceptors. далі вибираємо яку сторону перехоплюємо request(запит) або response(відповідь)
 // в метод .use() передаємо колбек, де res - це наш response який ми перехопили
@@ -26,28 +37,59 @@ axiosService.interceptors.response.use(
     },
     // Другим параметром ми робимо якщо були помилки. В нашому випадку, коли згорів access токен і повернулася 401 помилка
     // error це та помилка, яка пішла від сервера, але інтерсептором ми її перехопили
-    async error => {
+    async (error) => {
 
         // По суті це тоді, коли наш access згорів, і ми отримали помилку в response від нашого request
         // originalRequest це повністю весь запит, з урлою, та всіма даними які ми посилали на бекенд (body і тп)
         const originalRequest = error.config;
 
-        // ._isRefreshing - це ми додали будь-яке поле. Щоб ми знали робимо ми запит на refresh чи не робимо
-        if (error.response.status === 401 && !originalRequest._isRefreshing){
-            originalRequest._isRefreshing = true;
-
-            try {
-                await  authService.refresh(); // звертаємося до сервера і просимо нові ключі, якщо старі згоріли
-                return axiosService(originalRequest); // Передаючи його в axiosService і повертаючи його в колбеці помилки ми повторно робимо такий самий запит
-            } catch (e) {
-                // Тут виходить, що крім access помер і refresh токен
-                authService.deleteTokens(); // Видаляємо з локалСторіджа старі ключі
-                return Promise.reject(error);
+        if (error.response.status === 401) {
+            if (!isRefreshing) {
+                isRefreshing = true; // Говоримо що ми почали процес отримання нових ключів
+                try {
+                    await authService.refresh(); // Отримуємо нову пару ключів
+                    isRefreshing = false; // Сказали, що все ми отримали нову пару ключів
+                    afterRefresh(); // Запускаємо всі колбеки в нашій колекції
+                    return axiosService(originalRequest); // Якщо з рефрешом все ок, то ми повертаємо те куди хотіли попасти
+                } catch (e) { // Якщо була помилка
+                    authService.deleteTokens(); // Якщо була помилка, то ми видаляємо наші токени
+                    isRefreshing = false; // Ми не отримали нову пару ключів, але все одно наш процес закінчився
+                    history.replace('/login?expSession=true'); // Навігація на сторінку логінації, коли рефреш помер
+                    return Promise.reject(error); // Реджектне наш запит
+                }
             }
+
+            // Якщо в originRequest урла збігається з /refresh, то ми зробимо реджект
+            if (originalRequest.url === urls.auth.refresh) {
+                return Promise.reject(error); // Ми тормозимо наш запит і просто віддаємо користувачу помилку
+            }
+
+            // Для тих запитів які виконуються поки перший в черзі ще не закінчив процедуру отримання нових ключів
+            // Тобто обіцяємо, що це ↓ запуститься, але помістивши в колекцію, воно чекає, коли запуститься
+            return new Promise(resolve => {
+                subscribeToWaitList(() => {
+                    resolve(axiosService(originalRequest));
+                })
+            })
         }
-        return Promise.reject(error); // Можливо там ще якісь помилки пов'язані з авторизацією
+        return Promise.reject(error);
     }
 )
+
+// Ф-ція для запису колбеків в колекцію
+const subscribeToWaitList = (cb: IWaitListCB): void => {
+    waitList.push(cb); //Запушили до колекції
+}
+
+// Ф-ція запуску колбеків
+const afterRefresh = () => {
+    while (waitList.length) {
+        const cb = waitList.pop(); // Витягаємо з масиву наш колбек
+        cb(); // Запускаємо рефреш
+    }
+}
+
 export {
-    axiosService
+    axiosService,
+    history
 }
